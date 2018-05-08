@@ -1,0 +1,55 @@
+{% load comments %}
+<html>
+<head>
+    <title>{{ post.title }}</title>
+</head>
+
+<body>
+    <article class="post post-{{ post.pk }}">
+        <header class="entry-header">
+            <h1 class="entry-title">{{ post.title }}</h1>
+            <div class="entry-meta">
+                <span class="post-category">
+                    <a href="#">{{ post.category.name }}</a>
+                </span>
+                <span class="post-date">
+                    <a href="#">
+                        <time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time>
+                    </a>
+                </span>
+                <span class="post-author">
+                    <a href="#">{{ post.author }}</a>
+                </span>
+                <span class="comments-link">
+                    <a href="#">4 评论</a>
+                </span>
+                <span class="views-count">
+                    <a href="#">588 阅读</a>
+                </span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            {{ post.body }}
+        </div>
+    </article>
+<!--評論條數-->
+{% get_comment_count for post as comment_count %}
+<p>{{ comment_count }}條評論.</p>
+<!--評論列表-->
+{% render_comment_list for post %}
+
+{% get_comment_form for post as form %}
+<!-- A context variable called form is created with the necessary hidden
+fields, timestamps and security hashes -->
+<table>
+  <form action="{% comment_form_target %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <tr>
+      <td colspan="2">
+        <input type="submit" name="submit" value="Post">
+        <input type="submit" name="preview" value="Preview">
+      </td>
+    </tr>
+  </form>
+</table>
