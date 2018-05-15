@@ -1,4 +1,5 @@
 {% load comments %}
+{% load mptt_tags %}
 <html>
 <head>
     <title>{{ post.title }}</title>
@@ -33,16 +34,26 @@
         </div>
     </article>
 <!--評論條數-->
-{% get_comment_count for post as comment_count %}
-<p>{{ comment_count }}條評論.</p>
-<!--評論列表-->
-{% render_comment_list for post %}
 
-{% get_comment_form for post as form %}
+<ul>
+    {% recursetree comments_list %}
+        <li>
+            
+            內容：{{ node.content }}
+            发表于：{{node.created_time|timesince}}之前
+            {% if not node.is_leaf_node %}
+                <ul>
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
 <!-- A context variable called form is created with the necessary hidden
 fields, timestamps and security hashes -->
 <table>
-  <form action="{% comment_form_target %}" method="post">
+  <form action="{% url 'comments:post_comments' post.pk %}" method="post">
     {% csrf_token %}
     {{ form }}
     <tr>

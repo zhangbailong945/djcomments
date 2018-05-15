@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from .models import Post
+from comments.forms import CommentsForm
 # Create your views here.
 
 def index(request):
@@ -8,7 +9,9 @@ def index(request):
 
 def detail(request,pk):
     post=get_object_or_404(Post,pk=pk)
-    return render(request,'blog/detail.html',context={'post':post})
+    form=CommentsForm()
+    comments_list=post.comments_set.all()
+    return render(request,'blog/detail.html',context={'post':post,'form':form,'comments_list':comments_list})
 
 def login(request):
     return render(request,'accounts/')
