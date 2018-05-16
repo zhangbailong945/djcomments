@@ -1,66 +1,43 @@
-{% load comments %}
-{% load mptt_tags %}
-<html>
-<head>
-    <title>{{ post.title }}</title>
-</head>
 
-<body>
-    <article class="post post-{{ post.pk }}">
-        <header class="entry-header">
-            <h1 class="entry-title">{{ post.title }}</h1>
-            <div class="entry-meta">
-                <span class="post-category">
-                    <a href="#">{{ post.category.name }}</a>
-                </span>
-                <span class="post-date">
-                    <a href="#">
-                        <time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time>
-                    </a>
-                </span>
-                <span class="post-author">
-                    <a href="#">{{ post.author }}</a>
-                </span>
-                <span class="comments-link">
-                    <a href="#">4 评论</a>
-                </span>
-                <span class="views-count">
-                    <a href="#">588 阅读</a>
-                </span>
-            </div>
-        </header>
-        <div class="entry-content clearfix">
-            {{ post.body }}
+{% extends 'base.html' %}
+{% load staticfiles %} 
+
+{% block main %}
+
+<div class="jumbotron">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.body }}</p>
+        <p><a class="btn btn-primary btn-sm" href="#" role="button">{{ post.created_time }}</a></p>
+        <p><a class="btn btn-primary btn-sm" href="#" role="button">{{ post.author }}</a></p>
+        <p><a class="btn btn-primary btn-sm" href="#" role="button">{{ post.category.name }}</a></p>
+</div>
+
+
+
+{% endblock main%}
+
+
+
+{% block aside %}
+<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Panel title
+            </h3>
         </div>
-    </article>
-<!--評論條數-->
-
-<ul>
-    {% recursetree comments_list %}
-        <li>
-            
-            內容：{{ node.content }}
-            发表于：{{node.created_time|timesince}}之前
-            {% if not node.is_leaf_node %}
-                <ul>
-                    {{ children }}
-                </ul>
-            {% endif %}
-        </li>
-    {% endrecursetree %}
-</ul>
-
-<!-- A context variable called form is created with the necessary hidden
-fields, timestamps and security hashes -->
-<table>
-  <form action="{% url 'comments:post_comments' post.pk %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <tr>
-      <td colspan="2">
-        <input type="submit" name="submit" value="Post">
-        <input type="submit" name="preview" value="Preview">
-      </td>
-    </tr>
-  </form>
-</table>
+        <div class="panel-body">
+            Panel content
+        </div>
+        <div class="panel-footer">
+            Panel footer
+        </div>
+    </div>
+    <article class="uk-comment">
+            <header class="uk-comment-header">
+                <img class="uk-comment-avatar" src="{% static 'blog/images/cat.jpg' %}" alt="">
+                <h4 class="uk-comment-title">测试</h4>
+                <div class="uk-comment-meta">是是是</div>
+            </header>
+            <div class="uk-comment-body">搜索搜索</div>
+        </article>
+{% endblock aside %}

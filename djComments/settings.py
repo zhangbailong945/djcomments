@@ -86,6 +86,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djComments.wsgi.application'
 
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "statics"), ]
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases

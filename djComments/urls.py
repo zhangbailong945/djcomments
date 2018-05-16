@@ -18,7 +18,7 @@ from django.urls import path,re_path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'',include("blog.urls")),
+    re_path(r'blog/',include("blog.urls")),
     #re_path(r'^comments/',include('django_comments.urls')),
     re_path(r'^accounts/', include('allauth.urls')),
     re_path(r'',include('comments.urls')),
