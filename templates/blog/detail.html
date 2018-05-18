@@ -1,6 +1,7 @@
 
 {% extends 'base.html' %}
 {% load staticfiles %} 
+{% load mptt_tags %}
 
 {% block main %}
 
@@ -12,7 +13,60 @@
         <p><a class="btn btn-primary btn-sm" href="#" role="button">{{ post.category.name }}</a></p>
 </div>
 
+<table>
+        <form action="{% url 'comments:post_comments' post.pk %}" method="post">
+          {% csrf_token %}
+          {{ form }}
+          <tr>
+            <td colspan="2">
+              <input type="submit" name="submit" value="Post">
+              <input type="submit" name="preview" value="Preview">
+            </td>
+          </tr>
+        </form>
+</table>
 
+
+{% load mptt_tags %}
+<ul>
+    {% recursetree comments_list %}
+        <li>
+            {{ node.content }}
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
+<ul class="media-list">
+        {% recursetree comments_list %}
+        <li class="media">
+            <a class="media-left" href="#">
+                <img class="media-object" src="{% static 'blog/images/author.svg' %}"
+                     alt="通用的占位符图像">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">
+                        {{node.user}}
+                </h4>
+                <p>
+                    {{node.content|safe}}
+                </p>              
+                {% if not node.is_leaf_node %}
+                <!-- 嵌套的媒体对象 -->
+                <ul class="media-list">
+                    
+                    {{ children }}
+                    
+                </ul>
+                {% endif %}
+            </div>
+        </li>
+        {% endrecursetree %}
+ </ul>
 
 {% endblock main%}
 
@@ -32,12 +86,5 @@
             Panel footer
         </div>
     </div>
-    <article class="uk-comment">
-            <header class="uk-comment-header">
-                <img class="uk-comment-avatar" src="{% static 'blog/images/cat.jpg' %}" alt="">
-                <h4 class="uk-comment-title">测试</h4>
-                <div class="uk-comment-meta">是是是</div>
-            </header>
-            <div class="uk-comment-body">搜索搜索</div>
-        </article>
+
 {% endblock aside %}
