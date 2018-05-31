@@ -5,4 +5,5 @@ app_name='blog'
 urlpatterns=[
     re_path(r'^$', views.index, name='index'),
     re_path(r'^post/(?P<pk>[0-9]+)/$',views.detail,name='detail'),
+    re_path(r'^qaptacha/$',views.qaptacha,name='qaptacha'),
 ]
