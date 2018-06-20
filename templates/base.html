@@ -4,8 +4,10 @@
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'blog/bootstrap3/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'blog/QapTcha/css/QapTcha.jquery.css' %}" media="screen" />
-
+    
+    {% block QapTchaCss %}
+   
+    {% endblock QapTchaCss %}
     </head>
 <body>
 
@@ -104,25 +106,17 @@
                     </div>
                 </div>
             </div>
-    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="{% static 'blog/jquery3/jquery-3.3.1.min.js' %}"></script>
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="{% static 'blog/bootstrap3/js/bootstrap.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'blog/QapTcha/js/jquery.js' %}"></script>
-    <script type="text/javascript" src="{% static 'blog/QapTcha/js/jquery-ui.js' %}"></script>
-    <script type="text/javascript" src="{% static 'blog/QapTcha/js/jquery.ui.touch.js' %}"></script>
-    <script type="text/javascript" src="{% static 'blog/QapTcha/js/QapTcha.jquery.js' %}"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-          $('.QapTcha').QapTcha({
-            disabledSubmit:false,
-            autoRevert:true,
-            autoSubmit:false,
-            PHPfile: '{% url "blog:qaptacha" %}',
-            txtLock: '请将滑块拖到右边，解锁表单。',
-            txtUnlock: '已解锁，可以提交表单。'
-          });
-        });
-      </script>
+
+
+
+            <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+            <script src="{% static 'blog/jquery3/jquery-3.3.1.min.js' %}"></script>
+            <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+            <script src="{% static 'blog/bootstrap3/js/bootstrap.min.js' %}"></script>
+
+            <!-- 滑块验证码-->
+            {% block QapTchaJs %}
+            {% endblock QapTchaJs %}
+
 </body>
 </html>

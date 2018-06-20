@@ -22,4 +22,5 @@ urlpatterns = [
     #re_path(r'^comments/',include('django_comments.urls')),
     re_path(r'^accounts/', include('allauth.urls')),
     re_path(r'',include('comments.urls')),
+    re_path(r'^captcha/',include('captcha.urls')),
 ]
