@@ -1,50 +1,32 @@
-{% load staticfiles %}
-<html>
-<head>
-    <title>列表</title>
-</head>
 
-<body>
-    {% if user.is_authenticated %}
-     <h1>用戶：{{user.username}}<img src="{{ user.socialaccount_set.all.0.get_avatar_url }}"></h1>
-    {% else %}
-     <h2><a href="{% url 'account_login' %}">登录</a></h2>
-    {% endif %}
-    {% for post in post_list %}
-    <article></article>
-    <h1 class="entry-title">
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-    </h1>
-    <div class="entry-meta">
-        <span class="post-category">
-            <a href="#">{{ post.category.name }}</a>
-        </span>
-        <span class="post-date">
-            <a href="#">
-                <time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time>
-            </a>
-        </span>
-        <span class="post-author">
-            <a href="#">{{ post.author }}</a>
-        </span>
-        <span class="comments-link">
-            <a href="#">4 评论</a>
-        </span>
-        <span class="views-count">
-            <a href="#">588 阅读</a>
-        </span>
-    </div>
-    <div class="entry-content clearfix">
-        <p>{{ post.body }}</p>
-        <div class="read-more cl-effect-14">
-            <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读
-                <span class="meta-nav">→</span>
-            </a>
+{% extends 'base.html' %}
+{% load staticfiles %} 
+
+{% block main %}
+
+<ul class="list-group">
+        {% for post in post_list %}
+        <a href="{{ post.get_absolute_url }}" class="list-group-item">{{post.title}}----{{post.category.name}}-----发表于{{post.created_time|timesince}}之前</a>
+        {% empty %}
+        <li class="list-group-item">暂时还没有文字！</li>
+        {% endfor %}
+
+</ul>
+
+{% endblock main%}
+
+{% block aside %}
+<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Panel title
+            </h3>
+        </div>
+        <div class="panel-body">
+            Panel content
+        </div>
+        <div class="panel-footer">
+            Panel footer
         </div>
     </div>
-    </article>
-    {% empty %}
-    <div>暫時還沒有文章！</div>
-    {% endfor%}
-</body>
-</html>
+{% endblock aside %}

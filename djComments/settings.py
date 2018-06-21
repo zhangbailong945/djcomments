@@ -45,7 +45,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.weibo',
-]
+    'comments',
+    'mptt',
+    'captcha',
+
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,6 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djComments.wsgi.application'
 
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "statics"), ]
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -117,9 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -139,5 +144,23 @@ AUTHENTICATION_BACKENDS = (
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# django_simple_captcha 验证码配置   
+# 格式  
+CAPTCHA_OUTPUT_FORMAT = '%(text_field)s %(hidden_field)s %(image)s'  
+# 噪点样式  
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null', # 没有样式  
+    # 'captcha.helpers.noise_arcs', # 线  
+    # 'captcha.helpers.noise_dots', # 点  
+)  
+# 图片大小  
+CAPTCHA_IMAGE_SIZE = (100, 25)  
+CAPTCHA_BACKGROUND_COLOR = '#ffffff'  
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge' # 图片中的文字为随机英文字母，如 mdsh  
+# CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'    # 图片中的文字为数字表达式，如1+2=</span>  
+  
+CAPTCHA_LENGTH = 4 # 字符个数  
+CAPTCHA_TIMEOUT = 1 # 超时(minutes) 
 
 
