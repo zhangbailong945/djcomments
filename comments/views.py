@@ -9,8 +9,8 @@ def post_comments(request,post_pk):
     if request.method=='POST':
         form=CommentsForm(request.POST)
         #验证码
-        print('captcha_0:'+request.POST.get('captcha_0'))
-        print('captcha_1:'+request.POST.get('captcha_1'))
+        #print('captcha_0:'+request.POST.get('captcha_0'))
+        #print('captcha_1:'+request.POST.get('captcha_1'))
 
         if form.is_valid():
             comments=form.save(commit=False)
@@ -24,7 +24,7 @@ def post_comments(request,post_pk):
                 'form':form,
                 'comments_list':comments_list
             }
-            return render(request,'blog/detai.html',context=context)
+            return render(request,'blog/detail.html',context=context)
     return redirect(post)
     
         
