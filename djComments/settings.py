@@ -62,7 +62,7 @@ MIDDLEWARE = [
 ]
 
 SITE_ID=1
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/blog'
 #github 不需要艷照郵箱
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
