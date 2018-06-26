@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load staticfiles %} 
+{% load socialaccount %}
+
+{% block SimeditorCss %}
+<link rel="stylesheet" type="text/css" href="{% static 'blog/simeditor2.3.16/styles/simditor.css' %}" />
+{% endblock SimeditorCss %}
+
+{% block main %}
+<div class="media">
+    <div class="media-left">
+      <a href="#">
+        <img class="media-object" src="{% static 'blog/images/author.svg' %}" alt="{{ comment.user.username }}">
+      </a>
+    </div>
+    <div class="media-body">
+      <p>{{ comment.content }}</p>
+      <p>发表于<span style="color:green">{{ comment.created_time|timesince }}</span>之前,<a href="{{ comments.get_absolute_url }}">回复</a></p>
+    </div>
+</div>
+
+<form class="form-horizontal" action="{% url 'comments:post_comments' comment.post.pk %}" method="post" role="form">
+    <table>
+    
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <div class="form-group">
+                     <label for="editor" class="col-sm-2 control-label">回复内容:</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="content" id="editor" placeholder="提出你的疑问？" autofocus></textarea>
+                        <input type="hidden" name="parent" value="{{ comment.pk }}" />
+                        <input type="hidden" name="user" value="{{ comment.user.pk }}" />
+                        <input type="hidden" name="post" value="{{ comment.post.pk }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                         <input type="submit" name="submit" class="btn btn-default" value="发表"/>
+                         
+                    </div>
+                </div>
+                {% else %}
+                <div class="flex-center top-gap login-panel p-7">
+                    <div>
+                      <div class="text-muted text-center login-header"><span>登录后回复</span></div>
+                      <div id="app-login" class="flex-center text-center social-icons mt-3">
+                                          <span class="weibo mr-3">
+                                              <a href="{% provider_login_url 'weibo' %}">
+                                                  <i class="fa fa-weibo" aria-hidden="true"></i>
+                                              </a>
+                                          </span>
+                        <span class="github">
+                                              <a href="{% provider_login_url 'github' %}">
+                                                  <i class="fa fa-github" aria-hidden="true"></i>
+                                              </a>
+                                          </span>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+    
+    </table>
+    </form>
+    
+{% endblock main %}
+
+
+{% block SimeditorJs %}
+<script type="text/javascript" src="{% static 'blog/simeditor2.3.16/scripts/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'blog/simeditor2.3.16/scripts/module.js' %}"></script>
+<script type="text/javascript" src="{% static 'blog/simeditor2.3.16/scripts/hotkeys.js' %} "></script>
+<script type="text/javascript" src="{% static 'blog/simeditor2.3.16/scripts/uploader.js' %}"></script>
+<script type="text/javascript" src="{% static 'blog/simeditor2.3.16/scripts/simditor.js' %}"></script>
+<script type="text/javascript">
+    var editor = new Simditor({
+    textarea: $('#editor')
+
+  });
+</script>
+{% endblock SimeditorJs %}

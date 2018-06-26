@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from blog.models import Post
 from .models import Comments
 from .forms import CommentsForm
+from django.views.generic import DetailView
 
 # Create your views here.
 def post_comments(request,post_pk):
@@ -26,5 +27,15 @@ def post_comments(request,post_pk):
             }
             return render(request,'blog/detail.html',context=context)
     return redirect(post)
+
+
+def reply_comments(request,comment_pk):
+    comment=get_object_or_404(Comments,pk=comment_pk)
+    context={
+        'comment':comment,
+    }
+    return render(request,'blog/reply.html',context=context) 
+        
+    
     
         
