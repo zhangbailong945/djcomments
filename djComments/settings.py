@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'comments',
     'mptt',
     'captcha',
+    'users',
 
     ]
 
@@ -163,4 +166,6 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge' # 图片中的
 CAPTCHA_LENGTH = 4 # 字符个数  
 CAPTCHA_TIMEOUT = 1 # 超时(minutes) 
 
+
+AUTH_USER_MODEL='users.User'
 

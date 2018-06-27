@@ -1,7 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.urls import reverse
 from comments.models import Comments
+from users.models import User
 
 # Create your models here.
 class Categoy(models.Model):
