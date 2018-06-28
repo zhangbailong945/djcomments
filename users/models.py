@@ -6,8 +6,14 @@ class User(AbstractUser):
     nickname=models.CharField(max_length=50,blank=True)
     headimg=models.CharField(max_length=100,blank=True)
 
+    def social_avatar(self):
+        if self.socialaccount_set.exists():
+            return self.socialaccount_set.first().get_avatar_url()
+        return ''
+
     class Meta(AbstractUser.Meta):
         pass
+
         
 
 

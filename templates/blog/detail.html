@@ -1,7 +1,8 @@
 
 {% extends 'base.html' %}
 {% load staticfiles %} 
-{% load mptt_tags %}
+
+{% load blog_tags %}
 {% load socialaccount %}
 
 
@@ -68,10 +69,10 @@
         {% recursetree comments_list %}
         <li class="media">
             <a class="media-left" href="#" id="c{{ node.pk }}">
-                {% if user.socialaccount_set.all.0.get_avatr_url %}
-                <img width="30px" height="30px" alt="{{user.username}}" src="{{ user.socialaccount_set.all.0.get_avatar_url }}">
+                {% if node.user.social_avatar  %}
+                <img width="30px" height="30px" alt="{{ node.user.username }}" src="{{ node.user.social_avatar  }}">
                 {% else %}
-                <img class="media-object" src="{% static 'blog/images/author.svg' %}" alt="{{user.username}}">
+                <img class="media-object" src="{% static 'blog/images/author.svg' %}" alt="{{ node.user.username }}">
                 {% endif %}
             </a>
             <div class="media-body">
