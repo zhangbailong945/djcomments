@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'blog',
-    'django_comments',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -50,7 +49,6 @@ INSTALLED_APPS = [
     'comments',
     'mptt',
     'captcha',
-    'users',
 
     ]
 
@@ -167,5 +165,4 @@ CAPTCHA_LENGTH = 4 # 字符个数
 CAPTCHA_TIMEOUT = 1 # 超时(minutes) 
 
 
-AUTH_USER_MODEL='users.User'
 

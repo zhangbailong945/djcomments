@@ -1,70 +1,60 @@
 from django.utils.safestring import mark_safe
-from mptt.templatetags.mptt_tags import cache_tree_children
-from django.utils.translation import ugettext as _
 from django import template
+
 
 
 register = template.Library()
 
+@register.simple_tag
+def tree_comments(c_dict):
+    html='<ul class="media-list">'
+    for k,v in c_dict.items():
+        html+='<li class="media">'
+        html+='<a class="media-left" href="#" id="c'+str(k.id)+'">'
+        html+='<img class="media-object" width="50px" height="50px" src="'+str(k.user.headimg)+'" alt="'+k.user.username+'" />'
+        html+='</a>'
+        html+='<div class="media-body">'
+        html+='<h4 class="media-heading">'
+        html+=''+k.user.username+''
+        html+='</h4>'
+        html+='<p>'
+        html+=''+k.content+''
+        html+='</p>'
+        html+='<p>'
+        html+='<font color="#777" >'+str(k.time)+'</font>之前·<a href="#">回复</a>'
+        html+=tree_sub_comments(v)
+        html+='</p>'
+        html+='</div>'
+        html+='</li>'
+        html+='<hr style="height:1px;border:none;border-top:1px dashed #0066CC;" />'
+    html+='</ul>'
+    return mark_safe(html)
 
-class RecurseTreeNode(template.Node):
-    def __init__(self, template_nodes, queryset_var):
-        self.template_nodes = template_nodes
-        self.queryset_var = queryset_var
+def tree_sub_comments(sub_comment_dict):
+    html='<ul class="media-list">'
+    
+    for k,v in sub_comment_dict.items():
+        html+='<li class="media">'
+        html+='<a class="media-left" href="#" id="c'+str(k.id)+'">'
+        html+='<img class="media-object" width="50px" height="50px" src="'+str(k.user.headimg)+'" alt="'+k.user.username+'" />'
+        html+='</a>'
+        html+='<div class="media-body">'
+        html+='<h4 class="media-heading">'
+        html+='<font color="#777" >'+k.user.username+'</font>'
+        html+='<i class="fa fa-share" aria-hidden="true"></i>'
+        html+='<font color="#777" >'+k.parent.user.username+'</font>'
+        html+='</h4>'
+        html+='<p>'
+        html+=''+k.content+''
+        html+='</p>'
+        html+='<p>'
+        html+='<font color="#777">'+str(k.time)+'</font>之前·<a href="#">回复</a>'
+        if v:
+            html+=tree_sub_comments(v)
+        html+='</p>'
+        html+='</div>'
+        html+='</li>'
+           
+    html+='</ul>'
+    return html
 
-    def _render_node(self, context, node, length=0, index=0):
-        bits = []
-        context.push()
-        for child in node.get_children():
-            bits.append(self._render_node(context, child))
-        #将index添加到上下文里，和forloop一样，也提供四种计数方式
-        context['counter'] = index + 1
-        context['counter0'] = index
-        context['revcounter'] = length - index
-        context['revcounter0'] = length - index - 1
-        context['node'] = node
-        context['children'] = mark_safe(''.join(bits))
-        rendered = self.template_nodes.render(context)
-        context.pop()
-        return rendered
-
-    def render(self, context):
-        queryset = self.queryset_var.resolve(context)
-        roots = cache_tree_children(queryset)
-        bits = []
-        #通过enumerate，获取当前的index
-        for index, node in enumerate(roots):
-            bits.append(self._render_node(context, node, len(roots), roots.index(node)))
-        return ''.join(bits)
-
-
-@register.tag
-def recursetree(parser, token):
-    """
-    Iterates over the nodes in the tree, and renders the contained block for each node.
-    This tag will recursively render children into the template variable {{ children }}.
-    Only one database query is required (children are cached for the whole tree)
-    Usage:
-            <ul>
-                {% recursetree nodes %}
-                    <li>
-                        {{ node.name }}
-                        {% if not node.is_leaf_node %}
-                            <ul>
-                                {{ children }}
-                            </ul>
-                        {% endif %}
-                    </li>
-                {% endrecursetree %}
-            </ul>
-    """
-    bits = token.contents.split()
-    if len(bits) != 2:
-        raise template.TemplateSyntaxError(_('%s tag requires a queryset') % bits[0])
-
-    queryset_var = template.Variable(bits[1])
-
-    template_nodes = parser.parse(('endrecursetree',))
-    parser.delete_first_token()
-
-    return RecurseTreeNode(template_nodes, queryset_var)

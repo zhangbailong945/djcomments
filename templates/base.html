@@ -113,8 +113,8 @@
                                     </div>
                                     <div class="panel-body">
                                         <span>
-                                            {% if user.social_avatar %}
-                                            <img width="30px" height="30px" alt="{{user.username}}" src="{{ user.social_avatar }}">
+                                            {% if user.socialaccount_set.all.0.get_avatar_url %}
+                                            <img width="30px" height="30px" alt="{{user.username}}" src="{{ user.socialaccount_set.all.0.get_avatar_url }}">
                                             {% else %}
                                             <img class="media-object" src="{% static 'blog/images/author.svg' %}" alt="{{ user.username }}">
                                             {% endif %}
@@ -134,7 +134,6 @@
                                             <div class="content community">
                                                 <p>
                                                     <button type="submit" class="btn btn-link">登录</button>
-                                                    <a class="btn btn-link" href='{% url 'users:register' %}' >登录</a>
                                                 </p>
                                             </div>
                                         </form>
